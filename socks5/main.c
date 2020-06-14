@@ -8,11 +8,16 @@
 
 #include <stdio.h>
 #include <signal.h>
+#include "util.h"
 #include "socks5.h"
 
+
+
+
 int main(int argc, const char * argv[]) {
+    
     // insert code here...
-    printf("Hello, World!\n");
+    LOG_INFO("Hello, World!");
     struct socks5_svr svr;
     svr.port=4567;
     //忽略SIGPIPE信号，防止socket写入出错，产生SIGPIPE信号，导致进程退出
