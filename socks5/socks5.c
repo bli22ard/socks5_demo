@@ -18,12 +18,10 @@
 #include "socks5.h"
 #define BIND_IP "0.0.0.0"
 #define COPY_BUFF 50*1024
-static void println(char *msg);
 static void* handler(void *arg);
 static void free_socks5_client(struct socks5_client *sc);
 ssize_t send_all(int socket, void *buffer, size_t length);
 void *copy(void *arg);
-static void setNOSIGPIPE(int socketFD);
 
 int socks5_start(struct socks5_svr *svr){
     
@@ -68,7 +66,6 @@ int socks5_start(struct socks5_svr *svr){
             perror("accept error,cause:");
             continue;
         }
-        setNOSIGPIPE(client_fd);
         sc->client_fd=client_fd;
         pthread_create(&sc->client_thread, NULL, handler, sc);
     }
@@ -189,7 +186,6 @@ static void* handler(void *arg){
         free_socks5_client(sc);
         return NULL;
     }
-    setNOSIGPIPE(remote_fd);
     sc->remote_fd=remote_fd;
     if(connect(remote_fd, (struct sockaddr *)&dest_in, sizeof(dest_in))<0){
         perror("connect remote error");
@@ -219,10 +215,7 @@ static void* handler(void *arg){
     free_socks5_client(sc);
     return NULL;
 }
-static void setNOSIGPIPE(int socketFD){
-    int nosigpipe = 1;
-    setsockopt(socketFD, SOL_SOCKET, SO_NOSIGPIPE, &nosigpipe, sizeof(nosigpipe));
-}
+
 
 void *copy(void *arg){
     struct copy_param *cp=(struct copy_param *)arg;
