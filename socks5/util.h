@@ -10,8 +10,6 @@
 #define uitl_h
 
 #include <stdio.h>
-
-
 void LOG_INFO(const char *fmt,...);
 
 #endif /* uitl_h */

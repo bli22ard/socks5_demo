@@ -221,7 +221,9 @@ void *copy(void *arg){
     char buff[COPY_BUFF];
     while (1) {
         //printf("src_fd:%d,dest_fd:%d start copy\n",cp->src_fd,cp->dest_fd);
+        LOG_INFO("start copy");
         ssize_t read_len=read(cp->src_fd, buff, COPY_BUFF);
+        
         if(read_len==0){
             LOG_INFO("copy EOF fd:%d",cp->src_fd);
             shutdown(cp->dest_fd,SHUT_WR);
@@ -233,12 +235,13 @@ void *copy(void *arg){
             LOG_INFO("copy error fd:%d ,cause:%s",cp->src_fd,strerror(errno));
             return NULL;
         }
-        
+        LOG_INFO("read len:%d",read_len);
         if(send_all(cp->dest_fd, buff, read_len)<0){
             LOG_INFO("copy write dest error,cause:%s",strerror(errno));
             shutdown(cp->src_fd, SHUT_RD);
             return NULL;
         }
+        LOG_INFO("send over");
         //printf("src_fd:%d,dest_fd:%d end copy\n",cp->src_fd,cp->dest_fd);
     }
     return NULL;
@@ -263,7 +266,7 @@ static void free_socks5_client(struct socks5_client *sc){
         close(sc->remote_fd);
     }
     free(sc);
-    printf("free connect\n");
+    LOG_INFO("free connect\n");
 }
 
 
