@@ -226,20 +226,22 @@ void *copy(void *arg){
         
         if(read_len==0){
             LOG_INFO("copy EOF fd:%d",cp->src_fd);
-            shutdown(cp->src_fd, SHUT_RD);
-            shutdown(cp->dest_fd,SHUT_WR);
+            shutdown(cp->src_fd, SHUT_RDWR);
+            shutdown(cp->dest_fd,SHUT_RDWR);
 
             //shutdown(cp->src_fd, SHUT_RD);
             return NULL;
         }
         if(read_len<0){
-            shutdown(cp->src_fd, SHUT_RD);
-            shutdown(cp->dest_fd,SHUT_WR);
+            shutdown(cp->src_fd, SHUT_RDWR);
+            shutdown(cp->dest_fd,SHUT_RDWR);
             LOG_INFO("copy error fd:%d ,cause:%s",cp->src_fd,strerror(errno));
             return NULL;
         }
         LOG_INFO("read len:%d",read_len);
         if(send_all(cp->dest_fd, buff, read_len)<0){
+            shutdown(cp->src_fd, SHUT_RDWR);
+            shutdown(cp->dest_fd,SHUT_RDWR);
             LOG_INFO("copy write dest error,cause:%s",strerror(errno));
             return NULL;
         }
