@@ -18,7 +18,7 @@
 #include "util.h"
 #include "socks5.h"
 #define BIND_IP "0.0.0.0"
-#define COPY_BUFF 50*1024
+#define COPY_BUFF 2*1024
 static void* handler(void *arg);
 static void free_socks5_client(struct socks5_client *sc);
 ssize_t send_all(int socket, void *buffer, size_t length);
@@ -226,11 +226,14 @@ void *copy(void *arg){
         
         if(read_len==0){
             LOG_INFO("copy EOF fd:%d",cp->src_fd);
+            shutdown(cp->src_fd, SHUT_RD);
             shutdown(cp->dest_fd,SHUT_WR);
+
             //shutdown(cp->src_fd, SHUT_RD);
             return NULL;
         }
         if(read_len<0){
+            shutdown(cp->src_fd, SHUT_RD);
             shutdown(cp->dest_fd,SHUT_WR);
             LOG_INFO("copy error fd:%d ,cause:%s",cp->src_fd,strerror(errno));
             return NULL;
@@ -238,7 +241,6 @@ void *copy(void *arg){
         LOG_INFO("read len:%d",read_len);
         if(send_all(cp->dest_fd, buff, read_len)<0){
             LOG_INFO("copy write dest error,cause:%s",strerror(errno));
-            shutdown(cp->src_fd, SHUT_RD);
             return NULL;
         }
         LOG_INFO("send over");
