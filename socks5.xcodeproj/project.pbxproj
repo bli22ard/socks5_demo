@@ -28,6 +28,8 @@
 		D107A7102494FF76001FDAEB /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		D107A7172494FF9C001FDAEB /* socks5.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = socks5.h; sourceTree = "<group>"; };
 		D107A7182494FF9C001FDAEB /* socks5.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = socks5.c; sourceTree = "<group>"; };
+		D107A71A249617F1001FDAEB /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		D107A71B24961A2F001FDAEB /* CMakeLists.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,6 +46,7 @@
 		D107A7042494FF76001FDAEB = {
 			isa = PBXGroup;
 			children = (
+				D107A71A249617F1001FDAEB /* README.md */,
 				D107A70F2494FF76001FDAEB /* socks5 */,
 				D107A70E2494FF76001FDAEB /* Products */,
 			);
@@ -63,6 +66,7 @@
 				D107A7102494FF76001FDAEB /* main.c */,
 				D107A7172494FF9C001FDAEB /* socks5.h */,
 				D107A7182494FF9C001FDAEB /* socks5.c */,
+				D107A71B24961A2F001FDAEB /* CMakeLists.txt */,
 			);
 			path = socks5;
 			sourceTree = "<group>";
